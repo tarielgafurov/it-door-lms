@@ -7,7 +7,7 @@ const InputStyled = styled.input`
   margin: 10px 0;
   border:none;
   margin:auto;
-  margin-top:1opx;
+  margin-top:10px;
   justify-content:center;
   display:flex;
   flex-direction:column;
