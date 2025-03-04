@@ -1,8 +1,10 @@
 import styled from "styled-components"
+import React,{forwardRef} from "react";
+
 
 
 const InputStyled = styled.input`
-  width: 25%;
+  width:370px;
   padding: 10px;
   margin: 10px 0;
   border:none;
@@ -17,13 +19,12 @@ const InputStyled = styled.input`
   
   &:focus {
     border-bottom:2px solid #0056b3;
-    
+
   }
 `;
 
-  export const Input=(props)=>{
+  export const Input=forwardRef((props,ref)=>{
     return( 
-     < InputStyled placeholder={props.placeholder} type={props.text} value={props.value}>{props.children}</InputStyled>
-       
-    )
-  }
+     < InputStyled placeholder={props.placeholder} ref={props.ref} {...props} type={props.text} value={props.value}/>
+       )});
+       Input.displayName ="Imput";
