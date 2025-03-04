@@ -23,8 +23,7 @@ const InputStyled = styled.input`
   }
 `;
 
-  export const Input=forwardRef((props,ref)=>{
+  export const Input=forwardRef((props)=>{
     return( 
      < InputStyled placeholder={props.placeholder} ref={props.ref} {...props} type={props.text} value={props.value}/>
        )});
-       Input.displayName ="Imput";
