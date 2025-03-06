@@ -1,10 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import headerImage1 from '../assets/images/Group 3.svg';
-import headerImage2 from '../assets/images/Ellipse 1.svg';  
-import headerImage3 from '../assets/images/Толонбай у Доолот.svg';  
-import headerImage4 from '../assets/images/notification.svg';  
+import headerImage1 from '../../assets/images/Group 3.svg';
+import headerImage2 from '../../assets/images/Ellipse 1.svg';  
+import headerImage3 from '../../assets/images/Tolonbai  y dolot.svg';  
+import headerImage4 from '../../assets/images/notification.svg'; 
+
+
+
+
+
+
+
 
 const HeaderStyle = styled.header`
   background-color: #0B3852;
