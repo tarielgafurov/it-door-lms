@@ -25,7 +25,7 @@ const Card = styled.div`
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: 150px;
+  height: 200px;
   overflow: hidden;
 `;
 
@@ -52,10 +52,14 @@ const Info = styled.p`
   display: flex;
   align-items: center;
   gap: 5px;
+  margin-left:-70px;
 `;
 
 const Icon = styled.span`
-  font-size: 18px;
+  font-size: 20px;
+  margin:auto;
+  margin-top:-16px;
+  margin-left:70px;
 `;
 
 
@@ -65,21 +69,21 @@ const initialGroups = [
     name: "Группа JAVA 5", 
     lessons: 25, 
     students: 36, 
-    img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=300&h=200&fit=crop"
+    img: "https://avatars.mds.yandex.net/i?id=3fe05358d08d34953fa68e39d53433a3_l-5300093-images-thumbs&n=13"
   },
   { 
     id: Math.random, 
-    name: "Группа JavaScript 5", 
+    name: "Группа JAVA 5", 
     lessons: 25, 
     students: 36, 
-    img: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&h=200&fit=crop"
+    img: "https://habrastorage.org/getpro/habr/post_images/e22/6e8/41b/e226e841bc7f1d229c3c4312dacdb249.png"
   },
   { 
     id: Math.random, 
-    name: "Programming Refresher", 
+    name: "Группа JAVA 5", 
     lessons: 25, 
     students: 36, 
-    img: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=300&h=200&fit=crop"
+    img: "https://i.vuzopedia.ru/storage/app/uploads/public/5e6/f07/ffb/5e6f07ffb510c742821835.jpg"
   }
 ];
 
@@ -96,16 +100,14 @@ const Admin = () => {
             </ImageContainer>
             <Title>{group.name}</Title> 
             <CardContent>
-              <Info>
-                <Icon>💻</Icon> Уроки - {group.lessons}
-              </Info>
-              <Info>
-                <Icon>👥</Icon> Студенты - {group.students}
-              </Info>
+            <Icon>💻</Icon>
+              <Info>Уроки - {group.lessons}</Info>
+            <Icon>👥</Icon>
+              <Info>Студенты - {group.students}</Info>
             </CardContent>
           </Card>
         ))}
-      </Grid>
+      </Grid> 
     </Container>
   );
 };

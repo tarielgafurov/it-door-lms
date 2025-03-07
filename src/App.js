@@ -1,4 +1,4 @@
-
+import Admin from './admin/Admin';
 import './App.css';
 
 
@@ -6,7 +6,7 @@ function App() {
   
   return (
     <div className="App"> 
-    
+    <Admin/>
      </div>
   );
 }
