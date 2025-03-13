@@ -98,7 +98,7 @@ const initialGroups = [
   }
 ];
 
-const Admin = () => {
+const GroupAdmin = () => {
   const [groups] = useState(initialGroups);
 
   return (
@@ -123,4 +123,5 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default GroupAdmin;
+
