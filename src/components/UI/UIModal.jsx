@@ -60,7 +60,26 @@ function UIModal({ title = "Modal Title", content = "Modal Content Goes Here" })
     };
 
     const handleSave = () => {
-        console.log('Данные сохранены');
+        const fileContent = content;
+        const filename = 'modal_content.txt'; 
+        const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+
+        
+        const url = URL.createObjectURL(blob);
+
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+
+        
+        document.body.appendChild(link);
+        link.click();
+
+        
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
         setModalOpen(false);
         navigate('/saved');
     };
@@ -124,3 +143,4 @@ function App() {
 }
 
 export default App;
+
