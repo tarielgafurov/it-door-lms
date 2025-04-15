@@ -1,146 +1,143 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 
-const ModalButton = styled.button`
-    width: 120px;
-    margin: 10px;
-    padding: 10px 20px;
-    border: 1px solid #ccc;
-    background-color: #f0f0f0;
-    cursor: pointer;
-`;
-
-const ModalWidow = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 `;
 
 const ModalContent = styled.div`
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    max-width: 500px;
-    width: 90%;
+  background-color: white;
+  width: 300px;
+  padding: 40px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
-const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
 `;
 
-function UIModal({ title = "Modal Title", content = "Modal Content Goes Here" }) {
-    const [modalOpen, setModalOpen] = useState(false);
-    const navigate = useNavigate();
-    const modalRef = useRef(null);
+const OpenModalButton = styled.button`
+  background-color: #04AA6D;
+  width: 150px;
+  height: 50px;
+  border: none;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+`;
 
-    const openModal = () => {
-        setModalOpen(true);
-        setTimeout(() => {
-            if (modalRef.current) {
-                const firstInteractiveElement = modalRef.current.querySelector('button');
-                if (firstInteractiveElement) {
-                    firstInteractiveElement.focus();
-                }
-            }
-        }, 0);
-    };
+const FileInputWrapper = styled.div`
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+`;
 
-    const closeModal = () => {
-        setModalOpen(false);
-    };
+const StyledFileInput = styled.input`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+`;
 
-    const handleSave = () => {
-        const fileContent = content;
-        const filename = 'modal_content.txt'; 
-        const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+const CustomFileInputButton = styled.button`
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+`;
 
-        
-        const url = URL.createObjectURL(blob);
+function Modal({ isOpen, onClose, onFileSelect }) {
+  const fileInputRef = useRef(null); 
 
-        
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = filename;
+  if (!isOpen) {
+    return null;
+  }
 
-        
-        document.body.appendChild(link);
-        link.click();
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
 
-        
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+  const handleFileChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      onFileSelect(event.target.files[0]);
+    }
+    onClose();
+  };
 
-        setModalOpen(false);
-        navigate('/saved');
-    };
-
-    const handleCancel = () => {
-        console.log('Изменения отменены');
-        setModalOpen(false);
-    };
-
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === 'Escape' && modalOpen) {
-                closeModal();
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [modalOpen]);
-
-    return (
-        <div>
-            <ModalButton onClick={openModal}>Open Modal</ModalButton>
-            {modalOpen && (
-                <ModalWidow onClick={closeModal} aria-modal="true" role="dialog">
-                    <ModalContent onClick={(e) => e.stopPropagation()} ref={modalRef}>
-                        <h2>{title}</h2>
-                        <p>{content}</p>
-                        <ButtonContainer>
-                            <ModalButton onClick={handleSave}>Save</ModalButton>
-                            <ModalButton onClick={handleCancel}>Cancel</ModalButton>
-                        </ButtonContainer>
-                    </ModalContent>
-                </ModalWidow>
-            )}
-        </div>
-    );
+  return (
+    <ModalOverlay onClick={onClose}>
+      <ModalContent onClick={(e) => e.stopPropagation()}>
+        <CloseButton onClick={onClose}>&times;</CloseButton>
+        <FileInputWrapper>
+          <StyledFileInput
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+          />
+          <CustomFileInputButton onClick={handleButtonClick}>
+            Выберите файл
+          </CustomFileInputButton>
+        </FileInputWrapper>
+      </ModalContent>
+    </ModalOverlay>
+  );
 }
 
-function SavedPage() {
-    return (
-        <div>
-            <h1>Saved Page</h1>
-            <p>Данные успешно сохранены!</p>
-        </div>
-    );
+function UIModal() {
+  const [showModal, setShowModal] = React.useState(false);
+  const [selectedFile, setSelectedFile] = React.useState(null);
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const handleFileSelected = (file) => {
+    setSelectedFile(file);
+    console.log('Выбранный файл:', file);
+  };
+
+  return (
+    <>
+      <OpenModalButton onClick={openModal}>Открыть окно</OpenModalButton>
+      <Modal isOpen={showModal} onClose={closeModal} onFileSelect={handleFileSelected}>
+      </Modal>
+      {selectedFile && <p>Выбран файл: {selectedFile.name}</p>}
+    </>
+  );
 }
 
-function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<UIModal />} />
-                <Route path="/saved" element={<SavedPage />} />
-            </Routes>
-        </BrowserRouter>
-    );
-}
-
-export default App;
-
+export default UIModal;
